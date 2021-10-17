@@ -42,8 +42,8 @@ class Networking():
             print(e)
             
         while self.client.is_running:
-            self.data = self.send('tomate')
-            print(self.data)
+            self.data = self.send(self.client.data)
+            #print(self.data)
 
     def start_client_thread(self):
         self.client_thread=threading.Thread(
