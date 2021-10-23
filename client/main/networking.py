@@ -53,7 +53,11 @@ class Networking():
         time.sleep(1)
         try:
             self.socket.connect(self.addr)
-            self.player_id=self.socket.recv(2048).decode()
+            response = self.socket.recv(2048)
+            response = json_eval(zlib.decompress(response).decode())
+            self.id_player = response['id_player']
+            self.client.time = response['time']
+            print(self.id_player, self.client.time)
         except Exception as e:
             print(e)
             

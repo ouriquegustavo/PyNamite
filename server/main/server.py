@@ -2,12 +2,16 @@ import pygame
 from main.networking import Networking
 from main.entity_manager import EntityManager
 from main.character import Character
+from main.bomb import Bomb
 import math
+import time
+import random
 
 class Server():
     def __init__(self):
         self.tps=60
         self.clock = pygame.time.Clock()
+        self.time = int(1000*time.time())
         self.is_running=True
         self.entity_manager=EntityManager(self)
         self.start_networking()
@@ -39,5 +43,20 @@ class Server():
                 self.entity_manager.entities[id_player].y+=(
                     -client_data['u']+client_data['d']
                 )
+                
+                if (
+                    client_data['a'] and
+                    self.entity_manager.entities[id_player].bomb_delay <= 0
+                ):
+                    self.entity_manager.create_entity(
+                        Bomb,
+                        -1,
+                        x=self.entity_manager.entities[id_player].x,
+                        y=self.entity_manager.entities[id_player].y,
+                    )
+                    self.entity_manager.entities[id_player].bomb_delay = (
+                        self.entity_manager.entities[id_player].max_bomb_delay
+                    )
+
 
             #print('server thread')

@@ -7,7 +7,7 @@ from main.controls import Controls
 
 class Client():
     def __init__(self):
-        self.tps=30
+        self.tps=60
         self.clock = pygame.time.Clock()
         self.is_running=True
         self.data='N'

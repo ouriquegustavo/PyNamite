@@ -21,6 +21,10 @@ class Display():
         for id_ent, ent in self.client.entity_manager.entities.items():
             if not ent.is_hidden:
                 ent.draw()
+                
+        for id_ent, ent in self.client.entity_manager.local_entities.items():
+            if not ent.is_hidden:
+                ent.draw()
             
             
         pygame.display.flip()

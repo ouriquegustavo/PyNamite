@@ -57,8 +57,9 @@ class Networking():
     def client_thread(self, conn, id_player):
         try:
             print(id_player)
-            s=time.time()
-            conn.send( str(id_player).encode() )
+            reply = {'id_player': id_player, 'time': self.server.time}
+            reply = zlib.compress(json.dumps(reply).encode())
+            conn.send( reply )
             while self.server.is_running:
                 s=time.time()
                 data = zlib.decompress(conn.recv(2048)).decode()
@@ -80,7 +81,8 @@ class Networking():
             self.server.entity_manager.entities.items()
         }
         reply = {
-            'entities': entities
+            'entities': entities,
+            'events': self.server.entity_manager.events
         }
         return zlib.compress(json.dumps(reply).encode())
     

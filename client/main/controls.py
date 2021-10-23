@@ -8,6 +8,7 @@ class Controls():
             'd': 0,
             'l': 0,
             'r': 0,
+            'a': 0,
         }
         
     def get_keys(self):
@@ -16,3 +17,4 @@ class Controls():
         self.keys['d'] = int(get_pressed[pygame.K_s])
         self.keys['l'] = int(get_pressed[pygame.K_a])
         self.keys['r'] = int(get_pressed[pygame.K_d])
+        self.keys['a'] = int(get_pressed[pygame.K_e])

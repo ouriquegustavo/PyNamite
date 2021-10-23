@@ -1,9 +1,9 @@
 import random
 
 class Character():
-    def __init__(self, client, id_ent, x, y):
+    def __init__(self, server, id_ent, x, y):
         self.kind = 'character'
-        self.client = client
+        self.server = server
         self.id_ent = id_ent
         self.x=x
         self.y=y
@@ -16,6 +16,11 @@ class Character():
         self.width=50
         self.height=50
         
+        self.is_updating=True
+        
+        self.bomb_delay = 0 
+        self.max_bomb_delay = 60
+        
     def export_data(self):
         data = {
             'kind': self.kind,
@@ -27,3 +32,13 @@ class Character():
             }
         }
         return data
+        
+    def update(self):
+        if self.bomb_delay > 0:
+            self.bomb_delay-=1
+        if random.random() < 0.03:
+            self.colour = (
+                random.randint(0,255),
+                random.randint(0,255),
+                random.randint(0,255)
+            )
