@@ -4,6 +4,7 @@ import time
 import random
 import requests
 import json
+import zlib
 
 def json_eval(string):
     if not string:
@@ -39,10 +40,10 @@ class Networking():
             
     def send(self, data):
         try:
-            data_json = json.dumps(data).encode()
+            data_json = zlib.compress(json.dumps(data).encode())
             self.socket.send(data_json)
-            response = self.socket.recv(2048).decode()
-            return json_eval(response)
+            response = self.socket.recv(2048)
+            return json_eval(zlib.decompress(response).decode())
         except socket.error as e:
             print('ERROR', e)
             exit()

@@ -51,10 +51,6 @@ class Client():
                     
             self.display.update()
             
-            print(
-                self.entity_manager.entities['45'].x,
-                self.entity_manager.entities['45'].y
-            )
             #print(self.networking.data)
             #keys=pygame.key.get_pressed()
             #self.data=keys[pygame.K_w] and 'W' or 'N'

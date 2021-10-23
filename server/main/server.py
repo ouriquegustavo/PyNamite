@@ -23,20 +23,20 @@ class Server():
     def start_server(self):
         self.is_running=True
         self.tick=0
-        self.entity_manager.create_entity(Character, 45, x=300, y=300)
         
         while self.is_running:
             self.clock.tick(self.tps)
             self.tick+=1
-            id_players = list(self.networking.client_data.keys())
-            if id_players:
-                id_player=id_players[0]
+            
+            self.entity_manager.update()
+            
+            for id_player in self.networking.client_data:
                 client_data = self.networking.client_data[id_player]
                 
-                self.entity_manager.entities[45].x+=(
+                self.entity_manager.entities[id_player].x+=(
                     -client_data['l']+client_data['r']
                 )
-                self.entity_manager.entities[45].y+=(
+                self.entity_manager.entities[id_player].y+=(
                     -client_data['u']+client_data['d']
                 )
 
