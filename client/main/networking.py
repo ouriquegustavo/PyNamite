@@ -3,6 +3,15 @@ import socket
 import time
 import random
 import requests
+import json
+
+def json_eval(string):
+    if not string:
+        return {}
+    try:
+        return json.loads(string)
+    except:
+        return {}
 
 class Networking():
     def __init__(self, client, ip=None, port=None):
@@ -25,10 +34,15 @@ class Networking():
             return response.text
             
             
-    def send(self, data):
-        try:
             self.socket.send(str.encode(data))
             return self.socket.recv(2048).decode()
+            
+    def send(self, data):
+        try:
+            data_json = json.dumps(data).encode()
+            self.socket.send(data_json)
+            response = self.socket.recv(2048).decode()
+            return json_eval(response)
         except socket.error as e:
             print('ERROR', e)
             exit()
@@ -42,7 +56,8 @@ class Networking():
             print(e)
             
         while self.client.is_running:
-            self.data = self.send(self.client.data)
+            keys = self.client.controls.keys
+            self.data = self.send(keys)
             #print(self.data)
 
     def start_client_thread(self):

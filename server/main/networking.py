@@ -2,6 +2,15 @@ import threading
 import socket
 import time
 import random
+import json
+
+def json_eval(string):
+    if not string:
+        return {}
+    try:
+        return json.loads(string)
+    except:
+        return {}
 
 class Networking():
     def __init__(self, server, ip, port):
@@ -11,6 +20,7 @@ class Networking():
         self.max_connections=64
         self.max_id=8192
         self.client_threads = {}
+        self.client_data = {}
         self.setup_networking()
         
     def setup_networking(self):
@@ -37,17 +47,32 @@ class Networking():
                 id_player = random.randint(0, self.max_connections)
             client_thread=threading.Thread(target=self.client_thread, args=(conn,id_player,))
             client_thread.start()
-            self.client_threads[player_id]=client_thread
+            self.client_threads[id_player]=client_thread
         
     
     def client_thread(self, conn, id_player):
         print(id_player)
+        s=time.time()
         conn.send( str(id_player).encode() )
         while self.server.is_running:
+            s=time.time()
             data = conn.recv(2048).decode()
-            reply='abacaxi'
-            print(data)
-            conn.sendall(str.encode(reply))
+            data = json_eval(data)
+            self.client_data[id_player] = data
+            ####
+            reply = self.gen_reply()
+
+            conn.sendall(reply)
+            
+    def gen_reply(self):
+        entities = {
+            id_ent:ent.export_data() for id_ent, ent in
+            self.server.entity_manager.entities.items()
+        }
+        reply = {
+            'entities': entities
+        }
+        return json.dumps(reply).encode()
     
     def start_server_thread(self):
         self.server_thread=threading.Thread(

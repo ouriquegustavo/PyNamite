@@ -7,6 +7,20 @@ class Display():
         self.height=height
     
     def start_display(self):
-        self.diplay = pygame.display.set_mode(
+        self.display = pygame.display.set_mode(
             (self.width, self.height), pygame.DOUBLEBUF
         )
+        
+    def blit(self,*args):
+        self.display.blit(*args)
+        
+        
+    def update(self):
+        self.display.fill((0,0,255))
+    
+        for id_ent, ent in self.client.entity_manager.entities.items():
+            if not ent.is_hidden:
+                ent.draw()
+            
+            
+        pygame.display.flip()
