@@ -18,7 +18,9 @@ class EntityManager():
         
     def update(self):
         remove_list=[]
-        for id_ent, data in self.client.networking.data['entities'].items():
+        for id_ent, data in self.client.networking.data.get(
+            'entities',{}
+        ).items():
             if not id_ent in self.entities:
                 self.create_entity(
                     self.kind_from_to[data['kind']],

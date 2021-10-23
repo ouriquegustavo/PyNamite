@@ -17,6 +17,7 @@ def json_eval(string):
 class Networking():
     def __init__(self, client, ip=None, port=None):
         self.client=client
+        self.data={}
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.ip = (
