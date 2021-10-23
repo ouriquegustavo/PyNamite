@@ -6,12 +6,13 @@ class Character():
         self.id_ent = id_ent
         self.x=x
         self.y=y
+        self.colour = (255,255,255)
         
         self.width=50
         self.height=50
         
         self.sprite=pygame.Surface((self.width, self.height))
-        self.sprite.fill((255,255,255))
+        self.sprite.fill(self.colour)
         
         self.is_hidden=False
         
@@ -24,3 +25,6 @@ class Character():
     def import_data(self, data):
         self.x=data['x']
         self.y=data['y']
+        if self.colour != data['c']:
+            self.colour=data['c']
+            self.sprite.fill(self.colour)

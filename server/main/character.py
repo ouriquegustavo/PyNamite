@@ -1,3 +1,4 @@
+import random
 
 class Character():
     def __init__(self, client, id_ent, x, y):
@@ -6,6 +7,11 @@ class Character():
         self.id_ent = id_ent
         self.x=x
         self.y=y
+        self.colour = (
+            random.randint(0,255),
+            random.randint(0,255),
+            random.randint(0,255)
+        )
         
         self.width=50
         self.height=50
@@ -17,6 +23,7 @@ class Character():
             'import': {
                 'x': self.x,
                 'y': self.y,
+                'c': self.colour
             }
         }
         return data

@@ -18,6 +18,9 @@ class EntityManager():
         
     def update(self):
         remove_list=[]
+        networking_entity_list = self.client.networking.data.get(
+            'entities',{}
+        ).keys()
         for id_ent, data in self.client.networking.data.get(
             'entities',{}
         ).items():
@@ -35,6 +38,8 @@ class EntityManager():
                 ent.import_data(
                     self.client.networking.data['entities'][id_ent]['import']
                 )
+            if not id_ent in networking_entity_list:
+                ent.remove = True
             if hasattr(ent, 'remove') and ent.remove:
                 remove_list.append(id_ent)
         for id_ent in remove_list:
