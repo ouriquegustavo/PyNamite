@@ -56,9 +56,6 @@ class EntityManager():
         for event in event_list:
             if s-self.events[event]['t'] > self.duration_event_max:
                 del self.events[event]
-        print(self.events)
-                
-        
     
         ## Networked entities
         remove_list=[]

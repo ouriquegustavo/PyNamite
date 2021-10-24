@@ -1,4 +1,11 @@
 import random
+import math
+
+def calc_dr_sq(ient, fent):
+    dx = ient.x-fent.x
+    dy = ient.y-fent.y
+    dr_sq = dx*dx+dy*dy
+    return dr_sq
 
 class Bomb():
     def __init__(self, server, id_ent, x, y):
@@ -12,9 +19,12 @@ class Bomb():
         self.height=40
         
         self.tick=0
-        self.max_tick=120
+        self.max_tick=180
         
         self.is_updating=True
+        
+        self.damage_radius = 72
+        self.damage_radius_sq = self.damage_radius*self.damage_radius
         
     def export_data(self):
         data = {
@@ -34,3 +44,13 @@ class Bomb():
                 'explosion', data={'x': self.x, 'y': self.y}
             )
             self.remove=True
+            for id_ent, ent in self.server.entity_manager.entities.items():
+                if ent.kind=='character':
+                    dr_sq = calc_dr_sq(self, ent)
+                    if dr_sq < self.damage_radius_sq:
+                        ent.x=random.random()*1366
+                        ent.y=random.random()*768
+                if ent.kind=='bomb':
+                    dr_sq = calc_dr_sq(self, ent)
+                    if dr_sq < self.damage_radius_sq:
+                        ent.tick = self.max_tick

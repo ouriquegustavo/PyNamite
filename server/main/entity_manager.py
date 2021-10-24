@@ -31,7 +31,6 @@ class EntityManager():
             'c': callback,
             'd': data
         }
-        print(id_event)
         self.events[id_event] = event_data
         
     def update(self):

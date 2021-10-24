@@ -6,16 +6,21 @@ class Explosion():
         self.id_ent = id_ent
         self.x=x
         self.y=y
-        self.colour = (255, 0, 0)
+        self.colour = (255, 0, 0, 255)
         
-        self.width=7
-        self.height=7
+        self.radius=0
+        self.radius_delta=15
+        self.max_radius=100
+        self.growth_ticks = 5
+        self.shrink_ticks = 5
+        self.max_ticks = self.growth_ticks+self.shrink_ticks
         
-        self.sprite=pygame.Surface((self.width, self.height))
-        self.sprite.fill(self.colour)
+        self.sprite=pygame.Surface(
+            (2*self.max_radius, 2*self.max_radius), pygame.SRCALPHA
+        )
+        self.sprite.fill((0,0,0,0))
         
         self.tick=0
-        self.max_tick=20
         
         self.is_hidden=False
         self.is_updating=True
@@ -23,20 +28,24 @@ class Explosion():
     def draw(self):
         if not self.is_hidden:
             self.client.display.blit(
-                self.sprite, (self.x-self.width/2,self.y-self.height/2)
+                self.sprite, (self.x-self.radius,self.y-self.radius)
             )
             
     def update(self):
         self.tick+=1
-        if self.tick <= 10:
-            self.width += 6
-            self.height += 6
-        else:
-            self.width -= 6
-            self.height -= 6
+        if self.tick <= self.growth_ticks:
+            self.radius+=self.radius_delta
+        if (
+            self.tick > self.growth_ticks and
+            self.tick <= self.max_ticks
+        ):
+            self.radius-=self.radius_delta
             
-        
-        self.sprite=pygame.Surface((self.width, self.height))
-        self.sprite.fill(self.colour)
-        if self.tick >= self.max_tick:
+        self.sprite.fill((0,0,0,0))
+        pygame.draw.circle(
+            self.sprite, self.colour,
+            (self.radius, self.radius), self.radius
+        )
+
+        if self.tick >= self.max_ticks:
             self.remove=True

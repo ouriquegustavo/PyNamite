@@ -36,14 +36,6 @@ class Server():
             
             for id_player in self.networking.client_data:
                 client_data = self.networking.client_data[id_player]
-                
-                self.entity_manager.entities[id_player].x+=(
-                    -client_data['l']+client_data['r']
-                )
-                self.entity_manager.entities[id_player].y+=(
-                    -client_data['u']+client_data['d']
-                )
-                
                 if (
                     client_data['a'] and
                     self.entity_manager.entities[id_player].bomb_delay <= 0
