@@ -15,6 +15,8 @@ class Client():
         self.start_networking()
         self.start_display()
         
+        self.time = 1635690553843
+        
         self.server_x_size = 1600.
         self.server_y_size = 900.
         

@@ -23,7 +23,7 @@ class Bomb():
         
         self.is_updating=True
         
-        self.damage_radius = 85
+        self.damage_radius = 150
         self.damage_radius_sq = self.damage_radius*self.damage_radius
         
     def export_data(self):
@@ -48,8 +48,8 @@ class Bomb():
                 if ent.kind=='character':
                     dr_sq = calc_dr_sq(self, ent)
                     if dr_sq < self.damage_radius_sq:
-                        ent.x=random.random()*1366
-                        ent.y=random.random()*768
+                        ent.x=random.random()*self.server.x_size
+                        ent.y=random.random()*self.server.y_size
                 if ent.kind=='bomb':
                     dr_sq = calc_dr_sq(self, ent)
                     if dr_sq < self.damage_radius_sq:
