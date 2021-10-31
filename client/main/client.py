@@ -14,6 +14,13 @@ class Client():
         self.controls=Controls(self)
         self.start_networking()
         self.start_display()
+        
+        self.server_x_size = 1600.
+        self.server_y_size = 900.
+        
+        self.x_scale = self.display_width/self.server_x_size
+        self.y_scale = self.display_height/self.server_y_size
+        
         self.start_client()
         
     def start_networking(self):

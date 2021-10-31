@@ -16,9 +16,10 @@ class Character():
             random.randint(0,255)
         )
         
-        self.acc = 0.2
-        self.max_speed = 5
-        self.damping = 0.1
+        self.acc = 1.5
+        self.max_speed = 10
+        self.vmsq = self.max_speed*self.max_speed
+        self.damping = 3
         
         self.width=50
         self.height=50
@@ -26,7 +27,7 @@ class Character():
         self.is_updating=True
         
         self.bomb_delay = 0 
-        self.max_bomb_delay = 60
+        self.max_bomb_delay = 30
         
     def export_data(self):
         data = {
@@ -49,26 +50,51 @@ class Character():
             dx=-client_data['l']+client_data['r']
             dy=-client_data['u']+client_data['d']
             dr_sq=dx*dx+dy*dy
+        vr_sq = self.vx*self.vx+self.vy*self.vy
         if dr_sq > 0:
             dr = math.sqrt(dr_sq)
             dx=dx/dr
             dy=dy/dr
-            self.vx+=dx*self.acc
-            self.vy+=dy*self.acc
-            
-        vr_sq = self.vx*self.vx+self.vy*self.vy
-        if vr_sq < 0.01:
-            self.vx=0
-            self.vy=0
-        if vr_sq > 0:
-            vr_x = self.vx/vr_sq
-            vr_y = self.vy/vr_sq
-            self.vx = self.vx*(1-self.damping*abs(vr_x))
-            self.vy = self.vy*(1-self.damping*abs(vr_y))
-        
-            
+            nvx=self.vx+dx*self.acc
+            nvy=self.vy+dy*self.acc
+            nvr=nvx*nvx+nvy*nvy
+            if nvr > self.vmsq:
+                sqrt_nvr = math.sqrt(nvr)
+                nvx=self.max_speed*nvx/sqrt_nvr
+                nvy=self.max_speed*nvy/sqrt_nvr
+
+            self.vx=nvx
+            self.vy=nvy
+        else:
+            if vr_sq > 0:
+                vr_x = self.vx/vr_sq
+                vr_y = self.vy/vr_sq
+                if (self.vx - vr_x*self.damping)*(self.vx) < 0:
+                    self.vx=0
+                else:
+                    self.vx-= vr_x*self.damping
+                if (self.vy - vr_y*self.damping)*(self.vy) < 0:
+                    self.vy=0
+                else:
+                    self.vy-= vr_y*self.damping
+
         self.x+=self.vx
         self.y+=self.vy
+        
+        if self.x < 0:
+            self.x = 0
+            self.vx *= -1
+        if self.x > self.server.x_size:
+            self.x = self.server.x_size
+            self.vx *= -1
+        if self.y < 0:
+            self.y = 0
+            self.vy *= -1
+        if self.y > self.server.y_size:
+            self.y = self.server.y_size
+            self.vy *= -1
+            
+        print(math.sqrt(self.vx*self.vx+self.vy*self.vy))
     
         if self.bomb_delay > 0:
             self.bomb_delay-=1

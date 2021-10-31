@@ -13,6 +13,8 @@ class Server():
         self.clock = pygame.time.Clock()
         self.time = int(1000*time.time())
         self.is_running=True
+        self.x_size = 1600.
+        self.y_size = 900.
         self.entity_manager=EntityManager(self)
         self.start_networking()
         self.start_server()

@@ -11,8 +11,10 @@ class Display():
             (self.width, self.height), pygame.DOUBLEBUF
         )
         
-    def blit(self,*args):
-        self.display.blit(*args)
+    def blit(self,*args, **kwargs):
+        args = [i for i in args]
+        args[1]=(args[1][0]*self.client.x_scale, args[1][1]*self.client.y_scale)
+        self.display.blit(*args, **kwargs)
         
         
     def update(self):

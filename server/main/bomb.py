@@ -23,7 +23,7 @@ class Bomb():
         
         self.is_updating=True
         
-        self.damage_radius = 72
+        self.damage_radius = 85
         self.damage_radius_sq = self.damage_radius*self.damage_radius
         
     def export_data(self):
