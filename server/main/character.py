@@ -1,5 +1,6 @@
 import random
 import math
+from main.bomb import Bomb
 
 class Character():
     def __init__(self, server, id_ent, x, y):
@@ -26,8 +27,10 @@ class Character():
         
         self.is_updating=True
         
+        self.bomb_distance=50
+        
         self.bomb_delay = 0 
-        self.max_bomb_delay = 30
+        self.max_bomb_delay = 20
         
     def export_data(self):
         data = {
@@ -94,7 +97,18 @@ class Character():
             self.y = self.server.y_size
             self.vy *= -1
             
-        print(math.sqrt(self.vx*self.vx+self.vy*self.vy))
-    
         if self.bomb_delay > 0:
             self.bomb_delay-=1
+            
+        if client_data['m1'] and self.bomb_delay <= 0:
+            dx_pos = client_data['x']-self.x
+            dy_pos = client_data['y']-self.y
+            angle = math.atan2(dy_pos, dx_pos)
+            
+            self.server.entity_manager.create_entity(
+                Bomb, -1,
+                x=self.x+self.bomb_distance*math.cos(angle),
+                y=self.y+self.bomb_distance*math.sin(angle)
+            )
+            self.bomb_delay = self.max_bomb_delay
+

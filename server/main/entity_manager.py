@@ -41,7 +41,8 @@ class EntityManager():
                 del self.events[event]
     
         remove_list = []
-        for id_ent, ent in self.entities.items():
+        ent_list=list(self.entities.items())
+        for id_ent, ent in ent_list:
             if (
                 hasattr(ent, 'update')
                 and hasattr(ent, 'is_updating')

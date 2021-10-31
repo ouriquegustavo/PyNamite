@@ -36,21 +36,5 @@ class Server():
             
             self.entity_manager.update()
             
-            for id_player in self.networking.client_data:
-                client_data = self.networking.client_data[id_player]
-                if (
-                    client_data['a'] and
-                    self.entity_manager.entities[id_player].bomb_delay <= 0
-                ):
-                    self.entity_manager.create_entity(
-                        Bomb,
-                        -1,
-                        x=self.entity_manager.entities[id_player].x,
-                        y=self.entity_manager.entities[id_player].y,
-                    )
-                    self.entity_manager.entities[id_player].bomb_delay = (
-                        self.entity_manager.entities[id_player].max_bomb_delay
-                    )
-
 
             #print('server thread')
