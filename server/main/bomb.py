@@ -19,11 +19,11 @@ class Bomb():
         self.height=40
         
         self.tick=0
-        self.max_tick=180
+        self.max_tick=120
         
         self.is_updating=True
         
-        self.damage_radius = 150
+        self.damage_radius = 200
         self.damage_radius_sq = self.damage_radius*self.damage_radius
         
     def export_data(self):

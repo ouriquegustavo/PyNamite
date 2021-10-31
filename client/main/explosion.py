@@ -9,8 +9,8 @@ class Explosion():
         self.colour = (255, 0, 0, 255)
         
         self.radius=0
-        self.radius_delta=15
-        self.max_radius=100
+        self.radius_delta=37
+        self.max_radius=200
         self.growth_ticks = 5
         self.shrink_ticks = 5
         self.max_ticks = self.growth_ticks+self.shrink_ticks
