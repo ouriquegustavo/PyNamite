@@ -12,10 +12,10 @@ class Client():
         self.is_running=True
         self.data='N'
         self.controls=Controls(self)
+        self.time = 1635690553843
         self.start_networking()
         self.start_display()
         
-        self.time = 1635690553843
         
         self.server_x_size = 1600.
         self.server_y_size = 900.
